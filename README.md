@@ -1,17 +1,27 @@
 # Quantum-Atmosphere-Transport
 
-A quantum algorithm-based atmospheric tracer transport scheme for numerical weather prediction and climate modeling.
+A comprehensive atmospheric tracer transport package with **multiple solution methods** for numerical weather prediction and climate modeling.
 
 ## Overview
 
-This package implements a novel quantum-inspired approach to solving atmospheric tracer transport equations. Unlike classical transport schemes, this implementation uses:
+This package provides **7 different transport methods** for solving atmospheric tracer transport equations, ranging from quantum algorithms to classical numerical methods. This allows users to:
 
-- **Quantum Walk Algorithms** for diffusion modeling, providing quadratic speedup in spreading behavior
-- **Quantum Superposition** to represent and evolve concentration fields as quantum states
-- **Quantum Phase Shifts** for unitary advection operators that preserve numerical properties
-- **Quantum Decoherence** mechanisms for numerical stability
+- **Compare** different approaches on the same problem
+- **Choose** the best method for their specific application
+- **Benchmark** performance and accuracy
+- **Research** novel quantum-inspired algorithms
 
-The scheme solves the advection-diffusion equation:
+### Available Methods
+
+1. **Quantum Walk Transport** - Quantum algorithms with superposition and quantum walks
+2. **Classical Eulerian** - Traditional finite difference method
+3. **Classical Semi-Lagrangian** - Backward trajectory method
+4. **Classical Spectral** - FFT-based spectral method
+5. **Monte Carlo Particles** - Lagrangian particle tracking
+6. **Finite Volume** - Conservative flux-based method with limiters
+7. **Hybrid Quantum-Classical** - Best of both worlds
+
+All methods solve the advection-diffusion equation:
 
 ```
 ∂C/∂t + u·∇C = ∇·(K∇C) + S
@@ -25,13 +35,34 @@ where:
 
 ## Features
 
-- **Multiple advection schemes**: Semi-Lagrangian, spectral, and upwind methods with quantum enhancements
-- **Quantum diffusion**: Based on quantum random walks on lattices
-- **Mass conservation**: Maintained through quantum measurement and normalization
-- **Flexible configuration**: Easy-to-use configuration system for all parameters
+### Quantum Methods
+- **Quantum Walk Algorithms** for diffusion modeling (quadratic spreading)
+- **Quantum Superposition** for concentration field representation
+- **Quantum Phase Shifts** for unitary advection operators
+- **Quantum Decoherence** for numerical stability
+- **Quantum Statistics** tracking (coherence, entanglement)
+
+### Classical Methods
+- **Eulerian**: Explicit finite differences with upwind advection
+- **Semi-Lagrangian**: Unconditionally stable backward trajectories
+- **Spectral**: High-accuracy FFT-based method
+- **Finite Volume**: Conservative with flux limiters (minmod, superbee, van Leer, MC)
+
+### Particle Methods
+- **Monte Carlo**: Stochastic particle tracking with random walk diffusion
+- Lagrangian framework with automatic grid projection
+
+### Hybrid Methods
+- **Fixed Hybrid**: Blend quantum and classical with adjustable ratio
+- **Adaptive Hybrid**: Automatically switches based on turbulence indicators
+
+### General Features
+- **Unified Interface**: All methods inherit from common base class
+- **Benchmarking Framework**: Built-in comparison and performance tools
 - **1D, 2D, and 3D support**: Works with any dimensionality
 - **Boundary conditions**: Periodic and fixed boundary conditions
-- **Quantum statistics**: Track coherence, entanglement, and phase variance
+- **Mass conservation**: Tracked for all methods
+- **Flexible configuration**: Easy-to-use configuration system
 
 ## Installation
 
@@ -92,6 +123,56 @@ print(f"Quantum coherence: {stats['coherence']:.6f}")
 print(f"Entanglement: {stats['entanglement']:.6f}")
 ```
 
+## Comparing Multiple Methods
+
+The package includes a comprehensive benchmarking framework:
+
+```python
+from quantum_atmosphere_transport import (
+    QuantumTracerTransport,
+    ClassicalSemiLagrangianTransport,
+    MonteCarloParticleTransport,
+    FiniteVolumeTransport,
+    TransportConfig,
+)
+from quantum_atmosphere_transport.benchmark import TransportBenchmark, create_test_problem
+
+# Create test problem
+config = TransportConfig()
+problem = create_test_problem(grid_shape=(50, 50), problem_type='gaussian')
+
+# Initialize methods to compare
+methods = [
+    QuantumTracerTransport(config),
+    ClassicalSemiLagrangianTransport(config),
+    MonteCarloParticleTransport(config, n_particles=10000),
+    FiniteVolumeTransport(config, flux_limiter='minmod'),
+]
+
+# Run benchmark
+benchmark = TransportBenchmark(methods,
+    method_names=['Quantum', 'Semi-Lagrangian', 'Monte Carlo', 'Finite Volume'])
+
+results = benchmark.run(
+    initial_concentration=problem['initial_concentration'],
+    grid_shape=problem['grid_shape'],
+    velocity_field=problem['velocity_field'],
+    diffusion_coeff=100.0,
+    dt=0.1,
+    n_steps=100,
+)
+
+# Print comparison
+benchmark.print_summary()
+print(f"Fastest method: {benchmark.get_fastest_method()}")
+print(f"Best mass conservation: {benchmark.get_best_mass_conservation()}")
+
+# Export results
+benchmark.export_results('benchmark_results.npz')
+```
+
+See `examples/compare_methods.py` for a complete multi-method comparison with visualization.
+
 ## Configuration Options
 
 The `TransportConfig` class provides extensive configuration options:
@@ -117,17 +198,36 @@ The `TransportConfig` class provides extensive configuration options:
 
 ## Examples
 
-See the `examples/` directory for complete examples:
+The `examples/` directory contains complete working examples:
+
+### Simple Quantum Transport
 
 ```bash
-# Run simple transport example
 python examples/simple_transport.py
 ```
 
-This will create a visualization showing:
+Demonstrates quantum transport with visualization showing:
 - Tracer concentration evolution over time
-- Quantum statistics (coherence, entanglement)
+- Quantum statistics (coherence, entanglement, phase variance)
 - Transport in a uniform wind field
+
+### Multi-Method Comparison
+
+```bash
+python examples/compare_methods.py
+```
+
+Comprehensive comparison of all 7 transport methods:
+- Side-by-side concentration field visualizations
+- Performance benchmarks (execution time, mass conservation)
+- Statistical comparison charts
+- Exports numerical results for further analysis
+
+This example automatically:
+- Runs all methods on the same problem
+- Generates comparison plots
+- Reports fastest method and best conservation
+- Saves results to files
 
 ## Testing
 
@@ -173,12 +273,49 @@ where H is the quantum walk Hamiltonian (related to the Laplacian).
 
 Quantum measurement (|ψ|²) collapses the superposition to classical concentration. Decoherence gradually mixes quantum and classical states for numerical stability.
 
-## Performance Considerations
+## Method Selection Guide
 
-- **Grid Size**: Scales as O(N³) for 3D problems
-- **Time Evolution**: Exact evolution is slower but more accurate; Trotter decomposition provides good speed-accuracy tradeoff
-- **Spectral Methods**: Most efficient for smooth flows with periodic boundaries
-- **Semi-Lagrangian**: Best for complex velocity fields
+Choose the best method for your application:
+
+| Method | Best For | Pros | Cons |
+|--------|----------|------|------|
+| **Quantum Walk** | Research, turbulent flows | Novel approach, enhanced spreading | Computationally intensive |
+| **Semi-Lagrangian** | General purpose, large CFL | Unconditionally stable, accurate | Requires interpolation |
+| **Spectral** | Smooth flows, periodic domains | High accuracy, fast for large grids | Requires periodic BCs |
+| **Finite Volume** | Conservation-critical applications | Strictly conservative, monotonic | More complex implementation |
+| **Monte Carlo** | Lagrangian tracking, sparse plumes | Natural for particles, local adaptivity | Statistical noise |
+| **Eulerian** | Simple applications, teaching | Easy to understand | Stability restrictions |
+| **Hybrid** | Varied flow regimes | Combines strengths | Parameter tuning needed |
+
+### Performance Considerations
+
+- **Grid Size**:
+  - Spectral methods: O(N log N) with FFT
+  - Other methods: O(N) to O(N²) depending on scheme
+  - Quantum methods: Additional overhead for state management
+
+- **Time Step**:
+  - Semi-Lagrangian, Spectral: Unconditionally stable (large dt possible)
+  - Eulerian, Finite Volume: CFL condition applies
+  - Monte Carlo: Adaptive (based on diffusion length scale)
+
+- **Accuracy**:
+  - Spectral: Highest for smooth solutions
+  - Semi-Lagrangian: Second-order accurate
+  - Finite Volume: First to second-order (limiter dependent)
+  - Quantum: Research ongoing
+
+- **Memory**:
+  - Quantum: ~2x (complex-valued states)
+  - Monte Carlo: ~N_particles × dim
+  - Others: ~1x concentration field
+
+### Recommended Workflow
+
+1. **Start**: Use `ClassicalSemiLagrangianTransport` for reliable baseline
+2. **Compare**: Run `examples/compare_methods.py` on your problem
+3. **Optimize**: Select fastest method that meets accuracy requirements
+4. **Research**: Experiment with quantum methods for novel insights
 
 ## Contributing
 
