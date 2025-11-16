@@ -1,25 +1,40 @@
 # Quantum-Atmosphere-Transport
 
-A comprehensive atmospheric tracer transport package with **multiple solution methods** for numerical weather prediction and climate modeling.
+A comprehensive atmospheric tracer transport package with **17+ solution methods** for numerical weather prediction and climate modeling.
 
 ## Overview
 
-This package provides **7 different transport methods** for solving atmospheric tracer transport equations, ranging from quantum algorithms to classical numerical methods. This allows users to:
+This package provides **17+ different transport methods** for solving atmospheric tracer transport equations, featuring **11 quantum algorithms** and 6 classical/hybrid methods. This allows users to:
 
-- **Compare** different approaches on the same problem
-- **Choose** the best method for their specific application
+- **Compare** quantum vs classical approaches
+- **Research** cutting-edge quantum algorithms
 - **Benchmark** performance and accuracy
-- **Research** novel quantum-inspired algorithms
+- **Choose** the best method for their specific application
 
 ### Available Methods
 
-1. **Quantum Walk Transport** - Quantum algorithms with superposition and quantum walks
-2. **Classical Eulerian** - Traditional finite difference method
-3. **Classical Semi-Lagrangian** - Backward trajectory method
-4. **Classical Spectral** - FFT-based spectral method
-5. **Monte Carlo Particles** - Lagrangian particle tracking
-6. **Finite Volume** - Conservative flux-based method with limiters
-7. **Hybrid Quantum-Classical** - Best of both worlds
+#### Quantum Algorithms (11 methods)
+
+1. **Continuous-Time Quantum Walk** - Original quantum walk with superposition
+2. **Discrete-Time Quantum Walk** - Coin-based quantum walk with Hadamard/Grover coins
+3. **Staggered Quantum Walk** - Tessellation-based quantum walk
+4. **Quantum Amplitude Amplification** - Grover-like probability enhancement
+5. **Variational Quantum** - VQE-inspired parameterized circuits
+6. **Quantum Neural Network** - Quantum machine learning approach
+7. **HHL Algorithm** - Quantum linear solver with phase estimation
+8. **Quantum Matrix Inversion** - SVD-based quantum solver
+9. **Tensor Network (MPS)** - Matrix Product State representation
+10. **Quantum Cellular Automata** - Lattice gas automaton rules
+11. **Quantum Annealing** - Optimization-based transport
+
+#### Classical & Hybrid Methods (6 methods)
+
+1. **Classical Eulerian** - Traditional finite difference method
+2. **Classical Semi-Lagrangian** - Backward trajectory method
+3. **Classical Spectral** - FFT-based spectral method
+4. **Monte Carlo Particles** - Lagrangian particle tracking
+5. **Finite Volume** - Conservative flux-based method with limiters
+6. **Hybrid Quantum-Classical** - Adaptive blending of quantum and classical
 
 All methods solve the advection-diffusion equation:
 
@@ -35,34 +50,54 @@ where:
 
 ## Features
 
-### Quantum Methods
-- **Quantum Walk Algorithms** for diffusion modeling (quadratic spreading)
-- **Quantum Superposition** for concentration field representation
-- **Quantum Phase Shifts** for unitary advection operators
-- **Quantum Decoherence** for numerical stability
-- **Quantum Statistics** tracking (coherence, entanglement)
+### Quantum Algorithms (11 implementations)
+
+**Quantum Walk Methods**
+- **Continuous-Time Quantum Walk**: Quadratic spreading behavior (σ² ∝ t²)
+- **Discrete-Time Quantum Walk**: Coin operators (Hadamard, Grover, Fourier)
+- **Staggered Quantum Walk**: Tessellation-based evolution
+
+**Quantum Enhancement Methods**
+- **Amplitude Amplification**: Grover-like probability concentration
+- **Quantum Superposition**: Multiple transport scenarios simultaneously
+- **Quantum Phase Shifts**: Unitary advection operators
+
+**Variational & Learning Methods**
+- **Variational Quantum**: Parameterized circuits with classical optimization
+- **Quantum Neural Network**: Quantum ML with trainable weights
+
+**Quantum Linear Solvers**
+- **HHL Algorithm**: Quantum phase estimation + controlled rotation
+- **Quantum Matrix Inversion**: SVD-based quantum solver
+
+**Tensor Network & Automata**
+- **Matrix Product States (MPS)**: Efficient entanglement representation
+- **Quantum Cellular Automata**: Lattice gas rules with unitary evolution
+- **Quantum Annealing**: Energy minimization with quantum tunneling
+
+**Quantum Tracking**
+- Quantum statistics (coherence, entanglement entropy)
+- Bond dimension monitoring (MPS)
+- Annealing schedules
 
 ### Classical Methods
 - **Eulerian**: Explicit finite differences with upwind advection
 - **Semi-Lagrangian**: Unconditionally stable backward trajectories
 - **Spectral**: High-accuracy FFT-based method
 - **Finite Volume**: Conservative with flux limiters (minmod, superbee, van Leer, MC)
-
-### Particle Methods
-- **Monte Carlo**: Stochastic particle tracking with random walk diffusion
-- Lagrangian framework with automatic grid projection
+- **Monte Carlo Particles**: Stochastic particle tracking with random walk diffusion
 
 ### Hybrid Methods
 - **Fixed Hybrid**: Blend quantum and classical with adjustable ratio
 - **Adaptive Hybrid**: Automatically switches based on turbulence indicators
 
-### General Features
-- **Unified Interface**: All methods inherit from common base class
-- **Benchmarking Framework**: Built-in comparison and performance tools
-- **1D, 2D, and 3D support**: Works with any dimensionality
-- **Boundary conditions**: Periodic and fixed boundary conditions
-- **Mass conservation**: Tracked for all methods
-- **Flexible configuration**: Easy-to-use configuration system
+### Framework Features
+- **Unified Interface**: All 17+ methods inherit from common base class
+- **Comprehensive Benchmarking**: Built-in comparison and performance tools
+- **Flexible Dimensions**: 1D, 2D, and 3D support
+- **Boundary Conditions**: Periodic and fixed boundaries
+- **Mass Conservation**: Tracked and reported for all methods
+- **Easy Configuration**: Single config object for all parameters
 
 ## Installation
 
@@ -211,23 +246,40 @@ Demonstrates quantum transport with visualization showing:
 - Quantum statistics (coherence, entanglement, phase variance)
 - Transport in a uniform wind field
 
-### Multi-Method Comparison
+### All Methods Comparison
 
 ```bash
 python examples/compare_methods.py
 ```
 
-Comprehensive comparison of all 7 transport methods:
+Compares classical, quantum, and hybrid methods:
+- 7 methods including quantum walk, classical semi-Lagrangian, Monte Carlo, etc.
 - Side-by-side concentration field visualizations
 - Performance benchmarks (execution time, mass conservation)
 - Statistical comparison charts
-- Exports numerical results for further analysis
 
-This example automatically:
-- Runs all methods on the same problem
-- Generates comparison plots
-- Reports fastest method and best conservation
-- Saves results to files
+### Quantum Algorithms Comparison
+
+```bash
+python examples/quantum_algorithms_comparison.py
+```
+
+**NEW**: Comprehensive comparison of all 11 quantum algorithms:
+- Continuous/discrete/staggered quantum walks
+- Variational quantum and quantum neural networks
+- HHL algorithm and quantum matrix inversion
+- Tensor networks (MPS)
+- Quantum cellular automata
+- Quantum annealing
+
+Features:
+- Benchmarks all quantum algorithms on same problem
+- Detailed performance metrics and mass conservation analysis
+- Visual comparison of concentration fields
+- Identifies fastest quantum method and best conservation
+- Exports results for further analysis
+
+This is the most comprehensive quantum transport algorithm comparison available!
 
 ## Testing
 
